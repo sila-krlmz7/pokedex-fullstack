@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "./config.js";
 import userRouter from "./routes/user.routes.js";
+import "./db.js";
 
 const app = express();
 
