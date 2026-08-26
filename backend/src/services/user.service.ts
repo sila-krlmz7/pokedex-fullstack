@@ -1,39 +1,42 @@
 import type {User} from "../types/user.js"
+import {db} from "../db.js"
 
 export class UserService {
-    #users: User[] = []
-    #nextId: number = 1;
-
-
+   
     findAll(): User [] {
-        return this.#users;
+        return db
+            .prepare("SELECT id, name FROM users ORDER BY id")
+            .all() as User [];
     }
+
     findById(id: number): User | undefined  {
-        return this.#users.find(u => u.id === id)
+        return db
+            .prepare("SELECT id, name FROM users WHERE id = ?")
+            .get(id) as User | undefined;
     }
 
     create(name: string): User {
-        const newUser: User = {id: this.#nextId++, name}
-        this.#users.push(newUser)
-        return newUser;
+        const result = db
+            .prepare("INSERT INTO users (name) VALUES (?)")
+            .run(name);
+        return {id:Number(result.lastInsertRowid), name };
     }
 
     update(id: number, name: string): User | undefined {
-        const user = this.findById(id);
-        if(!user) {
+        const result = db
+            .prepare("UPDATE users SET name = ? WHERE id = ?")
+            .run(name, id);
+        if(result.changes === 0) {
             return undefined;
         }
-        user.name = name;
-        return user;
+        return {id, name};
     }
 
     remove(id: number): boolean {
-        const index = this.#users.findIndex(u => u.id === id);
-        if (index === -1){
-            return false;
-        }
-        this.#users.splice(index,1)
-        return true;
+        const result = db
+            .prepare("DELETE FROM users WHERE id = ?")
+            .run(id);
+        return result.changes > 0;
     }
 }
 export const userService = new UserService();
