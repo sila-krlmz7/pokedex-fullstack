@@ -33,9 +33,17 @@ function LocationList() {
   return (
     <div className="mx-auto max-w-3xl p-6">
       <h1 className="mb-1 text-3xl font-bold">Location'lar</h1>
-      <p className="mb-6 text-sm text-slate-500">
-        Bir bölgeye tıkla, oradaki pokémonları gör.
-      </p>
+      <div className="mb-6 flex items-center justify-between">
+        <p className="text-sm text-slate-500">
+          Bir bölgeye tıkla, oradaki pokémonları gör.
+        </p>
+        <Link
+          to="/pokedex"
+          className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm text-white hover:bg-slate-700"
+        >
+          Pokédex
+        </Link>
+      </div>
 
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {locations.map((loc) => (

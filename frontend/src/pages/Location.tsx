@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 type Encounter = {pokemon: {name:string; url:string}}
 
-const USER_ID = 1  // şimdilik sabit: siley
+const USER_ID = 1  // 1 siley, 2 berke, 3 burak
 
 function spriteUrl(pokemonUrl: string) {
     const parts = pokemonUrl.split("/")
